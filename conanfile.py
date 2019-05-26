@@ -61,6 +61,7 @@ class LibnameConan(ConanFile):
         "magnum/2019.01@camposs/stable",
         "magnum-plugins/2019.01@camposs/stable",
         "nodejs_installer/10.15.0@bincrafters/stable",
+        "bzip2/1.0.6@camposs/stable",
     )
 
     def system_package_architecture(self):
