@@ -49,7 +49,7 @@ class LibnameConan(ConanFile):
         "shared": False, 
         "fPIC": True,
         "with_ui": True,
-        "with_player": True,
+        "with_player": False,
         "with_ui_gallery": False,
     }
 
