@@ -60,7 +60,7 @@ class LibnameConan(ConanFile):
     requires = (
         "magnum/2019.01@camposs/stable",
         "magnum-plugins/2019.01@camposs/stable",
-        "nodejs_installer/10.15.0@bincrafters/stable",
+        "nodejs_installer/10.15.0@camposs/stable",
         "bzip2/1.0.6@camposs/stable",
     )
 
