@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, CMake, tools
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout, CMakeDeps
+from conan.tools.scm import Git
+from conan.tools.files import load, update_conandata, copy, collect_libs, get, replace_in_file
+from conan.tools.microsoft.visual import check_min_vs
+from conan.tools.system.package_manager import Apt
 import os
 
 def sort_libs(correct_order, libs, lib_suffix='', reverse_result=False):
@@ -23,18 +28,16 @@ def sort_libs(correct_order, libs, lib_suffix='', reverse_result=False):
 class LibnameConan(ConanFile):
     name = "magnum-extras"
     version = "2020.06"
-    description =   "magnum-extras — Lightweight and modular C++11/C++14 \
+    description = "magnum-extras — Lightweight and modular C++11/C++14 \
                     graphics middleware for games and data visualization"
     # topics can get used for searches, GitHub topics, Bintray tags etc. Add here keywords about the library
     topics = ("conan", "corrade", "graphics", "rendering", "3d", "2d", "opengl")
     url = "https://github.com/ulricheck/conan-magnum-extras"
     homepage = "https://magnum.graphics"
     author = "ulrich eck (forked on github)"
-    license = "MIT"  # Indicates license type of the packaged library; please use SPDX Identifiers https://spdx.org/licenses/
+    license = "MIT"
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt"]
-    generators = "cmake"
-    short_paths = True  # Some folders go out of the 260 chars path length scope (windows)
 
     # Options may need to change depending on the packaged library.
     settings = "os", "arch", "compiler", "build_type"
@@ -52,17 +55,6 @@ class LibnameConan(ConanFile):
         "with_player": False,
         "with_ui_gallery": False,
     }
-
-    # Custom attributes for Bincrafters recipe conventions
-    _source_subfolder = "source_subfolder"
-    _build_subfolder = "build_subfolder"
-
-    requires = (
-        "magnum/2020.06@camposs/stable",
-        "magnum-plugins/2020.06@camposs/stable",
-        "nodejs_installer/10.15.0@camposs/stable",
-        "bzip2/1.0.6@camposs/stable",
-    )
 
     def system_package_architecture(self):
         if tools.os_info.with_apt:
@@ -103,6 +95,11 @@ class LibnameConan(ConanFile):
             self.options['magnum'].add_option('with_sdl2application', True)
 
     def requirements(self):
+        self.requires("magnum/2020.06@camposs/stable")
+        self.requires("magnum-plugins/2020.06@camposs/stable")
+        self.requires("nodejs_installer/10.15.0@camposs/stable")
+        self.requires("bzip2/1.0.6@camposs/stable")
+
         if self.options.with_player:
             self.requires("sdl2/2.0.9@bincrafters/stable")
 
